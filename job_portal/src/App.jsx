@@ -8,12 +8,21 @@ import JobDetail from './pages/JobDetail'
 
 
 const App = () => {
+  const addJob = async (newJob) =>{
+    const res = await fetch ('/api/jobs',{
+      method : 'POST',
+      headers : {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newJob)
+    })
+  }
   return (
     <BrowserRouter>
     <Navbar />
     <Routes>
       <Route path='/' element={<HomePage />} />
-      <Route path='/add-job' element={<AddJob />} />
+      <Route path='/add-job' element={<AddJob addNewJob={addJob}/>} />
       <Route path='/jobs' element={<Jobs />} />
       <Route path='/jobs/:id' element={<JobDetail />} />
       <Route path='*' element={< PageNotFound />} />
