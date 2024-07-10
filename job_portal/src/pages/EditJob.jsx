@@ -1,26 +1,18 @@
+import { useLoaderData, useNavigate, useParams } from "react-router-dom"
+import { toast } from "react-toastify"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast} from 'react-toastify'
 
-const AddJob = ({addNewJob}) => {
 
-  const[title,setTitle]=useState()
-  const[type,setType]=useState('Full-Time')
-  const[description,setDescription]=useState('')
-  const[location,setLocation]=useState('')
-  const[salary,setSalary]=useState('Under $50K')
-  const[companyName,setCompanyName]=useState('')
-  const[companyDescription,setCompanyDescription]=useState('')
-  const[companyEmail,setCompanyEmail]=useState('')
-  const[companyPhone,setCompanyPhone]=useState('')
+const EditJob = ({updateJob}) => {
 
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
+  const {id}=useParams()
   const submitForm = (e) =>{
 
     e.preventDefault()
     
     const newJob={
+      id,
       title,
       type,
       description,
@@ -34,12 +26,24 @@ const AddJob = ({addNewJob}) => {
       }
       
     }
-    addNewJob(newJob)
+    updateJob(newJob)
 
-    toast.success("New ob Added Succesfully.")
-    return navigate('/jobs')   
+    toast.success("Job Updated Succesfully.")
+    return navigate(`/jobs/${id}`)   
     
   }
+
+  const job = useLoaderData()
+
+  const[title,setTitle]=useState(job.title)
+  const[type,setType]=useState(job.type)
+  const[description,setDescription]=useState(job.description)
+  const[location,setLocation]=useState(job.location)
+  const[salary,setSalary]=useState(job.salary)
+  const[companyName,setCompanyName]=useState(job.company.name)
+  const[companyDescription,setCompanyDescription]=useState(job.company.description)
+  const[companyEmail,setCompanyEmail]=useState(job.company.contactEmail)
+  const[companyPhone,setCompanyPhone]=useState(job.company.contactPhone)
 
   return (
     <section className="bg-indigo-50">
@@ -216,7 +220,7 @@ const AddJob = ({addNewJob}) => {
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
               >
-                Add Job
+                Update Job
               </button>
             </div>
           </form>
@@ -226,4 +230,4 @@ const AddJob = ({addNewJob}) => {
   )
 }
 
-export default AddJob
+export default EditJob
